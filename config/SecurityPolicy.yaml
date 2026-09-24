@@ -1,0 +1,62 @@
+# SYRION SecurityPolicy — Phase 0 STUB
+# IMMUTABLE zur Laufzeit (SYRION_ARCHITEKTUR.md:0 Leitplanke 2)
+# Änderungen nur offline, signiert, mit Backup + Audit-Eintrag.
+# PolicyEngine lädt diese Datei read-only beim Start.
+# Versionierung: jede Änderung erhöht version + approved_by + approved_at
+
+policy_version: "0.1.0-phase0"
+immutable: true
+approved_by: "Admin (initial stub)"
+approved_at: "2026-09-24"
+signature: "UNSIGNED-STUB-REPLACE-BEFORE-PROD"
+
+# Zonenmodell (SYRION_ARCHITEKTUR.md:6)
+zones:
+  kernel: 0
+  trusted_core: 1
+  sandbox: 2
+  quarantine: 3
+  extern: 4
+
+# Unveränderliche Leitplanken (hart verdrahtet, auch wenn hier "false" stünde, bleibt es verboten)
+immutable_rules:
+  allow_self_modify_model: false
+  allow_self_modify_security: false
+  allow_privilege_escalation: false
+  allow_auto_promote_quarantine: false
+
+# RBAC Rollen (SYRION_ARCHITEKTUR.md:7.1) — nur Definition, keine Enforcement-Logik in Phase 0
+roles:
+  admin:
+    description: "Mensch, einzige Rolle die Policy offline ändern darf"
+    scopes: ["*"]
+  user:
+    scopes: ["chat:read", "chat:write", "ingest:write", "memory:read:approved", "approvals:read", "approvals:write"]
+  agent_background:
+    scopes: ["memory:read:approved"]
+  agent_interactive:
+    scopes: ["memory:read:approved", "chat:write"]
+  tool:
+    scopes: []
+
+# Egress — in Phase 0 alles geblockt
+egress:
+  default: deny
+  allowlist: []
+  log_all_attempts: true
+
+# Capabilities
+capabilities:
+  ttl_default_seconds: 300
+  ttl_max_seconds: 86400
+  require_policy_check: true
+
+# Freigabesystem (SYRION_ARCHITEKTUR.md:7.3)
+approvals:
+  required_for:
+    - memory_promote
+    - file_write
+    - project_change
+    - external_send
+    - system_config
+  auto_approved: []  # in Phase 0 nichts auto-approved

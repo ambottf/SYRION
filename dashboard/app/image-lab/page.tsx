@@ -1,0 +1,1 @@
+import { ComingSoon } from "../../components/ComingSoon"; export default function Page(){ return <ComingSoon title="Image Lab" desc="Lokale Bildgenerierung: SDXL / Flux via ComfyUI, Queue, lokal gerendert." eta="Phase 5" />; }

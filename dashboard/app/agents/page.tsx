@@ -1,0 +1,1 @@
+import { ComingSoon } from "../../components/ComingSoon"; export default function Page(){ return <ComingSoon title="Agents" desc="Planner-Executor-Critic, Tool-Orchestrator, Capability-Tokens." eta="Phase 3" />; }

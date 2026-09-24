@@ -1,0 +1,8 @@
+# SYRION — line ending normalization (Windows/Linux Hybrid per SYRION_ARCHITEKTUR.md Kap 12)
+* text=auto eol=lf
+*.ps1 text eol=crlf
+*.bat text eol=crlf
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.pdf binary

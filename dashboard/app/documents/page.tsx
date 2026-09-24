@@ -1,0 +1,1 @@
+import { ComingSoon } from "../../components/ComingSoon"; export default function Page(){ return <ComingSoon title="Documents" desc="PDF-/Dokumenten-Ingestion: PDF zu Markdown, Chunk, Embed, Quarantaene." eta="Phase 1-2" />; }

@@ -1,0 +1,35 @@
+# SYRION Permissions — Phase 0 STUB
+# Entspricht dap-permissions.yaml aus SYRION_ARCHITEKTUR.md:8
+# Feingranulare Scopes. In Phase 0 nur deklarativ, kein Enforcement außer Stub-Check.
+
+version: "0.1.0-phase0"
+
+scopes:
+  # Memory
+  - id: "memory:read:approved"
+    description: "Approved Wissen lesen"
+  - id: "memory:read:quarantine"
+    description: "Quarantäne lesen (nur User/Admin)"
+  - id: "memory:write:quarantine"
+    description: "In Quarantäne schreiben"
+  - id: "memory:promote"
+    description: "Quarantäne -> Approved (nur via Freigabe, Kernel)"
+
+  # Tools
+  - id: "tool:web_search"
+    description: "Web-Recherche (isoliert, geloggt)"
+  - id: "tool:code_search"
+    description: "Codeanalyse lesend"
+  - id: "tool:file_write"
+    description: "Dateischreibzugriff (freigabepflichtig)"
+
+  # System
+  - id: "system:health:read"
+    description: "Health/Metriken lesen"
+  - id: "system:config:read"
+    description: "Config lesen"
+  - id: "system:config:write"
+    description: "Nur Admin offline"
+
+# Default-Deny: alles was nicht explizit erlaubt ist, ist verboten (SYRION_ARCHITEKTUR.md:6)
+default_policy: deny

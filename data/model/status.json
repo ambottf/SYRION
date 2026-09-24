@@ -1,0 +1,13 @@
+{
+  "state": "READY",
+  "message": "SYRION Modell trainiert und bereit.",
+  "updated_at": "2026-09-24T19:27:44.340447+00:00",
+  "checkpoint": "C:\\Users\\suedf\\OneDrive\\Desktop\\SYRION\\core\\checkpoints\\robotika_overfit",
+  "metrics": {
+    "epoch": 15,
+    "train_loss": 3.3499711751937866,
+    "val_loss": 3.299699068069458,
+    "ppl": 27.104481089422922,
+    "lr": 0.0
+  }
+}

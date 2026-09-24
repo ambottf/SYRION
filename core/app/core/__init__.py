@@ -1,0 +1,1 @@
+"""SYRION Core — zentrale Orchestrierungsschicht (Phase 1)."""

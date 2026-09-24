@@ -1,0 +1,26 @@
+# SYRION — root dockerignore (Phase 0 Basis)
+# Verhindert Leak von Secrets und großen Artefakten in Images
+.git
+.gitignore
+.qodo
+node_modules
+dashboard/node_modules
+dashboard/.next
+core/__pycache__
+core/.pytest_cache
+.env
+.env.local
+data/qdrant_storage
+data/kuzu_db
+data/audit/audit.log
+data/object_store
+memory
+logs
+backups
+sandbox
+models/llm
+models/embeddings
+models/vision
+models/tts
+.DS_Store
+Thumbs.db

@@ -1,0 +1,1 @@
+import { ComingSoon } from "../../components/ComingSoon"; export default function Page(){ return <ComingSoon title="System" desc="Modelle, Storage, Logs, Backups (age-verschluesselt), Watchdog." eta="Phase 4" />; }

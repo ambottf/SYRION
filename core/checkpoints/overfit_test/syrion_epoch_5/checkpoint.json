@@ -1,0 +1,19 @@
+{
+  "run_id": "syrion_epoch_5",
+  "created_at": "2026-09-24T19:26:28.352795+00:00",
+  "model_config": {
+    "vocab_size": 114,
+    "d_model": 32,
+    "n_layers": 2,
+    "epoch": 5
+  },
+  "dataset_version": "test",
+  "metrics": {
+    "loss": 3.1131919622421265,
+    "val_loss": 2.9484894275665283,
+    "ppl": 19.077114588503168,
+    "epoch": 5
+  },
+  "version": "0.1.0",
+  "hash": "9a518a7f1009e32c"
+}

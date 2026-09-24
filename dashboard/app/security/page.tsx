@@ -1,0 +1,1 @@
+import { ComingSoon } from "../../components/ComingSoon"; export default function Page(){ return <ComingSoon title="Security" desc="Zonen 0-4, PolicyEngine, RBAC, Capability-Tokens, Egress-Proxy." eta="Phase 0-4" />; }

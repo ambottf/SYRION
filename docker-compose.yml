@@ -1,0 +1,98 @@
+# SYRION Phase 0 — Grundgerüst
+# Keine Geschäftslogik. Nur Infrastruktur-Skelett laut SYRION_ARCHITEKTUR.md Kap. 3, 5, 8, 11
+# Start: docker compose up -d
+# Stop : docker compose down
+
+services:
+  # --- Primary DB: Postgres 16 (SYRION_ARCHITEKTUR.md:3) ---
+  postgres:
+    image: postgres:16-alpine
+    container_name: syrion-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-syrion}
+      POSTGRES_USER: ${POSTGRES_USER:-syrion}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-syrion_dev_only}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./infra/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-syrion} -d ${POSTGRES_DB:-syrion}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # --- Cache / STM: Redis 7 (SYRION_ARCHITEKTUR.md:3 M1) ---
+  redis:
+    image: redis:7-alpine
+    container_name: syrion-redis
+    restart: unless-stopped
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    volumes:
+      - redisdata:/data
+      - ./data/redis_dump.rdb:/data/dump.rdb
+    command: ["redis-server", "--appendonly", "yes", "--save", "60", "1"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  # --- Vector DB: Qdrant (SYRION_ARCHITEKTUR.md:3) ---
+  qdrant:
+    image: qdrant/qdrant:v1.11.3
+    container_name: syrion-qdrant
+    restart: unless-stopped
+    ports:
+      - "${QDRANT_HTTP_PORT:-6333}:6333"
+      - "${QDRANT_GRPC_PORT:-6334}:6334"
+    volumes:
+      - ./data/qdrant_storage:/qdrant/storage
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:6333/healthz"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+
+  # --- Gateway Stub: FastAPI (SYRION_ARCHITEKTUR.md:5.1) ---
+  # Baut nur Health-Endpoint. Keine RAG/Agent/Tool Logik in Phase 0.
+  gateway:
+    build:
+      context: ./core
+      dockerfile: Dockerfile
+    container_name: syrion-gateway
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      qdrant:
+        condition: service_healthy
+    ports:
+      - "${GATEWAY_PORT:-8080}:8080"
+    environment:
+      SYRION_ENV: ${SYRION_ENV:-development}
+      DATABASE_URL: postgres://${POSTGRES_USER:-syrion}:${POSTGRES_PASSWORD:-syrion_dev_only}@postgres:5432/${POSTGRES_DB:-syrion}
+      REDIS_URL: redis://redis:6379/0
+      QDRANT_URL: http://qdrant:6333
+      SECURITY_POLICY_PATH: /app/config/SecurityPolicy.yaml
+      AUDIT_LOG_PATH: /app/data/audit/audit.log
+    volumes:
+      - ./config:/app/config:ro
+      - ./data/audit:/app/data/audit
+      - ./logs:/app/logs
+      # models read-only (SYRION_ARCHITEKTUR.md:4 Regel)
+      - ./models:/app/models:ro
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:8080/api/v1/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  pgdata:
+  redisdata:

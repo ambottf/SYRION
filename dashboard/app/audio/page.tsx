@@ -1,0 +1,1 @@
+import { ComingSoon } from "../../components/ComingSoon"; export default function Page(){ return <ComingSoon title="Audio" desc="STT (Whisper large-v3), Speaker-ID, TTS (Piper) - alles lokal." eta="Phase 1 + 5" />; }

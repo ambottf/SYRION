@@ -1,0 +1,38 @@
+# SYRION — Phase 0
+.env
+.env.local
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.venv/
+venv/
+node_modules/
+dashboard/.next/
+dashboard/out/
+dist/
+build/
+
+# Daten (nicht committen, SYRION_ARCHITEKTUR.md:8)
+data/qdrant_storage/
+data/kuzu_db/
+data/primary.db
+data/redis_dump.rdb
+data/audit/audit.log
+data/object_store/
+memory/
+logs/
+backups/
+sandbox/workdir-*
+
+# Modelle (groß, read-only, via pull)
+models/llm/*
+models/embeddings/*
+models/vision/*
+models/tts/*
+!models/.gitkeep
+
+# OS
+.DS_Store
+Thumbs.db

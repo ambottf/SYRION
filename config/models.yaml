@@ -1,0 +1,60 @@
+# SYRION Model Registry — eigenes SYRION Modell (kein Ollama, kein externes LLM als Kern)
+# Core ist nie von einem Anbieter abhängig — SYRION Adapter ist austauschbar geprüft.
+# Wenn kein großes Modell trainiert, läuft Basis-Modell (syrion-0.1.0-base) lokal.
+
+version: "0.4.0-syrion"
+
+models:
+  syrion_core:
+    enabled: true
+    provider: syrion
+    model_id: "syrion-0.1.0-base"
+    version: "0.1.0"
+    note: "Eigenes SYRION Basis-Modell (64 dim, 2 layers, lokal, kein Ollama). Später trainierte Versionen via Registry."
+
+  syrion_chat:
+    enabled: false
+    provider: syrion
+    model_id: "syrion-0.2.0-chat"
+    version: "0.2.0"
+    note: "Zukünftige Chat-Variante nach Training"
+
+  embedding:
+    enabled: false
+    provider: syrion
+    model_id: "syrion-embed-0.1.0"
+    note: "Eigenes Embedding, später"
+
+  vision:
+    enabled: false
+    provider: sidecar
+    model_id: "syrion-vision-0.1.0"
+    note: "Eigene Vision, später"
+
+  # Legacy externe Sidecars (nicht Kern) — bleiben optional, nicht Ollama
+  ocr:
+    enabled: false
+    provider: sidecar
+    endpoint: "http://ocr-sidecar:8002"
+
+  image_gen:
+    enabled: false
+    provider: sidecar
+    endpoint: "http://comfyui:8188"
+
+  stt:
+    enabled: false
+    provider: sidecar
+    model_id: "faster-whisper:large-v3"
+    endpoint: "http://stt-sidecar:8003"
+
+  tts:
+    enabled: false
+    provider: sidecar
+    model_id: "piper:de_DE-thorsten"
+
+paths:
+  models_root: "./models/syrion"
+  checkpoints: "./checkpoints"
+  vocab: "./models/syrion/vocab.json"
+  registry: "./models/syrion/registry.json"
